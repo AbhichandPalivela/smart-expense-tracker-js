@@ -6,10 +6,10 @@
   const bar = document.querySelector('.pre-bar');
   const status = document.getElementById('preStatus');
   const messages = [
-    'Booting system...',
-    'Loading Spring context...',
-    'Connecting to MySQL...',
-    'Starting application...',
+    'Initializing...',
+    'Loading AI models...',
+    'Connecting sensors...',
+    'Compiling portfolio...',
     'Ready.'
   ];
   let progress = 0;
@@ -88,55 +88,48 @@ document.querySelectorAll('.mm-link').forEach(l => {
 });
 
 /* ==============================
-   TERMINAL TYPER
+   TERMINAL TYPER — Python RL
 ============================== */
-const code = `@RestController
-@RequestMapping("/api/products")
-public class ProductService {
+const code = `import numpy as np
+from ucb import UCBAgent
 
-    @Autowired
-    private ProductRepository repo;
+class RLSearchEngine:
 
-    @GetMapping
-    public List<Product> getAll() {
-        return repo.findAll();
-    }
+    def __init__(self, n_arms=50):
+        self.agent = UCBAgent(
+            n_arms=n_arms,
+            c=1.5  # exploration factor
+        )
+        self.history = []
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Product create(
-        @RequestBody Product p) {
-        return repo.save(p);
-    }
+    def recommend(self, query, top_k=5):
+        scores = self.agent.get_ucb_scores()
+        ranked = np.argsort(scores)[::-1]
+        results = self._fetch(ranked[:top_k])
+        self.agent.update(ranked[0], reward=1)
+        return results
 
-    @DeleteMapping("/{id}")
-    public void delete(
-        @PathVariable Long id) {
-        repo.deleteById(id);
-    }
-}`;
+    def personalize(self, user_id):
+        return self.agent.get_context(user_id)`;
 
 function typeCode(el, str, cursor, delay = 2700) {
-  let i = 0;
   el.textContent = '';
-
-  // Syntax highlight tokens
-  const tokens = {
-    keywords: /\b(public|class|private|void|new|return|import|static|List|Long)\b/g,
-    annotations: /@\w+/g,
-    strings: /"[^"]*"/g,
-    types: /\b(Product|ProductRepository|HttpStatus|ResponseStatus)\b/g,
-  };
 
   function colorize(line) {
     line = line
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;');
-    line = line.replace(/@\w+/g, m => `<span style="color:#a78bfa">${m}</span>`);
-    line = line.replace(/"[^"]*"/g, m => `<span style="color:#6ee7b7">${m}</span>`);
-    line = line.replace(/\b(public|class|private|void|return|static|new|import)\b/g, m => `<span style="color:#f472b6">${m}</span>`);
-    line = line.replace(/\b(List|Long|Product|ProductRepository|HttpStatus|ResponseStatus)\b/g, m => `<span style="color:#fb923c">${m}</span>`);
+    // comments
+    line = line.replace(/#.*/g, m => `<span style="color:#52525b">${m}</span>`);
+    // strings
+    line = line.replace(/"[^"]*"|'[^']*'/g, m => `<span style="color:#6ee7b7">${m}</span>`);
+    // decorators / imports
+    line = line.replace(/\b(import|from|class|def|return|self|True|False|None)\b/g, m => `<span style="color:#f472b6">${m}</span>`);
+    // numbers
+    line = line.replace(/\b(\d+\.?\d*)\b/g, m => `<span style="color:#fb923c">${m}</span>`);
+    // types/classes
+    line = line.replace(/\b(UCBAgent|RLSearchEngine|np)\b/g, m => `<span style="color:#a78bfa">${m}</span>`);
     return line;
   }
 
@@ -159,8 +152,24 @@ function typeCode(el, str, cursor, delay = 2700) {
       charIdx = 0;
     }
     el.innerHTML = rendered.map(l => colorize(l)).join('\n');
-    setTimeout(type, charIdx === 0 ? 8 : 22);
+    setTimeout(type, charIdx === 0 ? 8 : 20);
   }, delay);
+}
+
+/* ==============================
+   COUNTER ANIMATION
+============================== */
+function animateCounter(el, target, duration = 1800) {
+  let start = 0;
+  const step = target / (duration / 16);
+  const timer = setInterval(() => {
+    start += step;
+    if (start >= target) {
+      start = target;
+      clearInterval(timer);
+    }
+    el.textContent = Math.floor(start);
+  }, 16);
 }
 
 function initPage() {
@@ -193,6 +202,23 @@ function initPage() {
   }, { threshold: 0.3 });
   document.querySelectorAll('.stack-group').forEach(g => skillObs.observe(g));
 
+  // Stat counters
+  const statsEl = document.querySelector('.hero-stats');
+  if (statsEl) {
+    const countObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          document.querySelectorAll('.hs-val[data-count]').forEach(el => {
+            const target = parseInt(el.dataset.count);
+            animateCounter(el, target);
+          });
+          countObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    countObs.observe(statsEl);
+  }
+
   // Contact form
   const form = document.getElementById('cForm');
   const cfBtn = document.getElementById('cfBtn');
@@ -213,7 +239,7 @@ function initPage() {
     });
   }
 
-  // Smooth scrolling for nav links
+  // Smooth scrolling
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       const target = document.querySelector(a.getAttribute('href'));
@@ -224,7 +250,7 @@ function initPage() {
     });
   });
 
-  // Active nav link highlight
+  // Active nav highlight
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nl');
   window.addEventListener('scroll', () => {
