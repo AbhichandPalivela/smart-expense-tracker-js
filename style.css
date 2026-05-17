@@ -1,34 +1,172 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-  font-family: Arial;
-  background: #f4f4f4;
-  display: flex;
-  justify-content: center;
-  margin-top: 50px;
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    transition: 0.3s;
 }
 
 .container {
-  background: white;
-  padding: 30px;
-  width: 350px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px gray;
+    width: 100%;
+    max-width: 550px;
+    background: #1e293b;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);
 }
 
-input {
-  width: 100%;
-  margin: 10px 0;
-  padding: 10px;
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-button {
-  width: 100%;
-  padding: 10px;
-  background: black;
-  color: white;
-  border: none;
-  cursor: pointer;
+.top-bar button {
+    padding: 10px 14px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 18px;
 }
 
-li {
-  margin: 10px 0;
+.balance-card {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+}
+
+.balance-card h1 {
+    margin-top: 10px;
+    font-size: 36px;
+}
+
+.form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+input,
+select {
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+.add-btn {
+    padding: 14px;
+    background: #22c55e;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.add-btn:hover {
+    transform: scale(1.02);
+}
+
+.search-box {
+    margin-top: 20px;
+}
+
+.transaction-section {
+    margin-top: 25px;
+}
+
+.transaction-section h2 {
+    margin-bottom: 15px;
+}
+
+#list {
+    list-style: none;
+}
+
+#list li {
+    background: #334155;
+    margin-bottom: 12px;
+    padding: 15px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.transaction-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.category {
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+.delete-btn {
+    background: #ef4444;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.chart-container {
+    margin-top: 30px;
+    background: white;
+    padding: 15px;
+    border-radius: 15px;
+}
+
+.light-mode {
+    background: #f1f5f9;
+    color: black;
+}
+
+.light-mode .container {
+    background: white;
+    color: black;
+}
+
+.light-mode #list li {
+    background: #e2e8f0;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media(max-width: 600px) {
+
+    .container {
+        padding: 20px;
+    }
+
+    .balance-card h1 {
+        font-size: 30px;
+    }
 }
