@@ -129,16 +129,16 @@ function updateChart() {
         }
     });
 }
-
-let darkMode = true;
-
 themeToggle.addEventListener("click", () => {
 
     document.body.classList.toggle("light-mode");
 
-    darkMode = !darkMode;
-
-    themeToggle.textContent = darkMode ? "🌙" : "☀️";
+    if(document.body.classList.contains("light-mode")){
+        themeToggle.textContent = "☀️";
+    }
+    else{
+        themeToggle.textContent = "🌙";
+    }
 });
 
 displayTransactions(transactions);

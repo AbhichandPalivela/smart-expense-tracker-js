@@ -170,3 +170,31 @@ select {
         font-size: 30px;
     }
 }
+.light-mode {
+    background: #f1f5f9;
+    color: black;
+}
+
+.light-mode .container {
+    background: white;
+    color: black;
+}
+
+.light-mode input,
+.light-mode select {
+    background: #e2e8f0;
+    color: black;
+}
+
+.light-mode #list li {
+    background: #e2e8f0;
+    color: black;
+}
+
+.light-mode .chart-container {
+    background: #e2e8f0;
+}
+
+.light-mode .top-bar button {
+    background: #cbd5e1;
+}
