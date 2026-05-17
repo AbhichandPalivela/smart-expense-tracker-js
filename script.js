@@ -135,7 +135,7 @@ function typeCode(el, str, cursor, delay = 2700) {
       .replace(/>/g, '&gt;');
     line = line.replace(/@\w+/g, m => `<span style="color:#a78bfa">${m}</span>`);
     line = line.replace(/"[^"]*"/g, m => `<span style="color:#6ee7b7">${m}</span>`);
-    line = line.replace(/\b(public|class|private|void|return|static|new)\b/g, m => `<span style="color:#f472b6">${m}</span>`);
+    line = line.replace(/\b(public|class|private|void|return|static|new|import)\b/g, m => `<span style="color:#f472b6">${m}</span>`);
     line = line.replace(/\b(List|Long|Product|ProductRepository|HttpStatus|ResponseStatus)\b/g, m => `<span style="color:#fb923c">${m}</span>`);
     return line;
   }
@@ -225,7 +225,7 @@ function initPage() {
   });
 
   // Active nav link highlight
-  const sections = document.querySelectorAll('section[id], #hero');
+  const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nl');
   window.addEventListener('scroll', () => {
     let current = '';
